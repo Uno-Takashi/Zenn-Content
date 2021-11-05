@@ -1,0 +1,13 @@
+{
+    "name": "Zenn Content",
+    "dockerFile": "../Dockerfile",
+    "settings": {
+        "editor.guides.bracketPairs": true,
+        "editor.bracketPairColorization.enabled": true
+    },
+    "extensions": [
+		"ms-azuretools.vscode-docker",
+		"njpwerner.autodocstring",
+		"davidanson.vscode-markdownlint"
+	]
+}
