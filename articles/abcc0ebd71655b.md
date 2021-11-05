@@ -1,4 +1,10 @@
-# poetry-versing-pluginによる動的バージョン付けを使ったCD構築[github actions]
+---
+title: "poetry-versing-pluginによる動的バージョン付けを使ったCD構築[github actions]"
+emoji: "👏"
+type: "tech" # tech: 技術記事 / idea: アイデア
+topics: ["githubactions","poetry","cicd"]
+published: false
+---
 
 ## poetryでパッケージビルド時に動的にバージョンを付与したい
 
