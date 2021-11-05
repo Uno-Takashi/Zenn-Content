@@ -1,2 +1,3 @@
-FROM node:17.0
-CMD [ "npm" , "install" ]
+FROM node:17.0 
+
+WORKDIR /workspace/
