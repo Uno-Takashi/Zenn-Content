@@ -8,13 +8,15 @@ published: true
 
 ## poetryでパッケージビルド時に動的にバージョンを付与したい
 
+poetryは、（個人的に）今一番熱いパッケージ管理ツールです。
+
 poetryでのビルド時には、`pyproject.toml`にてversionを指定する必要があります。
 
-この仕様は、Github Actionsで自動ビルド・デプロイを構築しようとしたときに、毎回`pyproject.toml`を書き換えるためのコミットを打たなくてはいけない部分が障壁となりえます。
+この仕様は、Github Actionsで自動ビルド・デプロイを構築しようとしたときに、**毎回`pyproject.toml`を書き換える**ためのコミットを打たなくてはいけない、という問題に直面します。
 
-もちろんtomlファイルを書き換えるためのスクリプトを作ってもいいのですがめんどくさいのでできればやりたくありませんね。
+もちろんtomlファイルを書き換えるためのスクリプトを作ってもいいのですが、構築も保守も大変なのでやりたくありませんね。
 
-そのため、今回はpoetry-versing-pluginを使った動的バージョン付与と、それを応用した、GithubActionsからバージョン付けをしたうえでPyPIへの自動デプロイについて説明したいと思います。
+そのため、今回は[poetry-version-plugin](https://pypi.org/project/poetry-version-plugin/)を使った動的バージョン付与と、それを応用してGithub Actionsからバージョン付けをしたうえでPyPIへの自動デプロイを行う方法について解説したいと思います。
 
 ## poetry-versing-pluginのインストール
 
@@ -24,7 +26,7 @@ poetry-versing-pluginは、poetryのpluginという機能を使って仮想環�
 
 poetryのplugin機能は、poetryのバージョン1.2以上で追加される機能です。
 
-記事執筆時(2021/11/05)のpoetry latestバージョンは1.1.7であり、まだpluginに対応していません。そのため、previewバージョンのpoetryをインストールするか、すでにインストールしてあるpoetryをアップグレードする必要があります。
+記事執筆時(2021/11/05)の**poetry latestバージョンは1.1.7**であり、まだpluginに対応していません。そのため、**previewバージョンのpoetryをインストール**するか、すでにインストールしてある**poetryをアップグレード**する必要があります。
 
 従って必要に応じて以下の二つのうちのどちらかを実行してください。
 
@@ -44,13 +46,15 @@ curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-
 (Invoke-WebRequest -Uri https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py -UseBasicParsing).Content | python - --preview
 ```
 
-その後、どちらの環境でもPATHを通す必要があるため、ターミナルの指示に従ってください。
+その後、どちらの環境でも**PATHを通す必要があるため**、ターミナルの指示に従ってください。
+
+Linux環境ではPATHを通すためのコマンドが指示され、Windows環境では環境変数に追加するパラメータが与えられます。
 
 #### プレビュー版poetryへのアップデートコマンド
 
 すでにPATHが通ったpoetry環境が存在している場合は、一からインストールする場合と比べてやや簡単になります。
 
-windows、Linuxのどちらの環境でも以下のコマンドを入力してください。
+windows、Linuxのどちらの環境でも以下のコマンドでpreview環境にアップデートできます。
 
 ```bash
 poetry self update --preview
@@ -134,8 +138,6 @@ source = "git-tag"
 
 ### 作りたいGitHub Actionsを考える
 
-※ 完成済みのGitHub Actionsは末尾に記載しております
-
 GitHub Actionsでバージョンでリリースを作って、そのままPyPIに公開する方法をご紹介します。
 
 そのためには毎回バージョンを付与してビルドしておく必要があるわけですが、それをお手軽にできるのがpoetry-versing-pluginの素晴らしさです。
@@ -156,7 +158,7 @@ GitHub Actionsでバージョンでリリースを作って、そのままPyPI�
 
 先ほど考えた仕様を満たしているものを私が作成いたしましたので、そちらを基に解説を行います。
 
-ひとまず、出来上がったものが以下の通りです。
+ひとまず、出来上がったものが以下のActions設定yamlファイルです。
 
 ```yaml
 name: release
