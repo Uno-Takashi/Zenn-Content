@@ -14,4 +14,6 @@ VSCodeの[Remote - Containers](https://marketplace.visualstudio.com/items?itemNa
 
 ## articles
 
+投降済みの記事になります。
+
 [poetry-versing-pluginによる動的バージョン付けを使ったCD構築[github actions]](https://zenn.dev/u_not/articles/abcc0ebd71655b/)
