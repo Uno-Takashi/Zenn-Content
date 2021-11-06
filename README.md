@@ -1,5 +1,28 @@
 # Zenn Content
 
+  <a href="https://zenn.dev/u_not">
+    <img src="https://zenn.badge.nikaera.com/s/u_not/likes?style=plastic" alt="u_not likes" />
+  </a>
+    <!-- Articles のバッジ -->
+  <a href="https://zenn.dev/u_not/articles">
+    <img src="https://zenn.badge.nikaera.com/s/u_not/articles?style=plastic" alt="u_not articles" />
+  </a>
+
+  <!-- Followers のバッジ -->
+  <a href="https://zenn.dev/u_not/followers">
+    <img src="https://zenn.badge.nikaera.com/s/u_not/followers?style=plastic" alt="u_not followers" />
+  </a>
+
+  <!-- Books のバッジ -->
+  <a href="https://zenn.dev/u_not/books">
+    <img src="https://zenn.badge.nikaera.com/s/u_not/books?style=plastic" alt="u_not books" />
+  </a>
+
+  <!-- Scraps のバッジ -->
+  <a href="https://zenn.dev/u_not/scraps">
+    <img src="https://zenn.badge.nikaera.com/s/u_not/scraps?style=plastic" alt="u_not scraps" />
+  </a>
+
 zennの記事を格納するためのリポジトリ
 
 ## Usage
