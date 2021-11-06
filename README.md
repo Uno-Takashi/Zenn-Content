@@ -1,5 +1,11 @@
 # Zenn Content
 
+[![zenn likes](https://zenn.badge.nikaera.com/s/u_not/likes?style=flat)](https://zenn.dev/u_not)
+[![zenn articles](https://zenn.badge.nikaera.com/s/u_not/articles?style=flat)](https://zenn.dev/u_not/articles)
+[![zenn followers](https://zenn.badge.nikaera.com/s/u_not/followers?style=flat)](https://zenn.dev/u_not/articles)
+[![zenn books](https://zenn.badge.nikaera.com/s/u_not/books?style=flat)](https://zenn.dev/u_not/books)
+[![zenn scraps](https://zenn.badge.nikaera.com/s/u_not/scraps?style=flat)](https://zenn.dev/u_not/scraps)
+
 zennの記事を格納するためのリポジトリ
 
 ## Usage
