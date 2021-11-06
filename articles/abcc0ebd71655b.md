@@ -2,8 +2,8 @@
 title: "poetry-versing-pluginによる動的バージョン付けを使ったCD構築[github actions]"
 emoji: "👏"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: ["githubactions","poetry","cicd"]
-published: false
+topics: ["githubactions","poetry","cicd","python"]
+published: true
 ---
 
 ## poetryでパッケージビルド時に動的にバージョンを付与したい
@@ -31,14 +31,16 @@ poetryのplugin機能は、poetryのバージョン1.2以上で追加される�
 #### プレビュー版poetryのインストールコマンド
 
 基本的には以下のコマンドを打てばインストール完了です。
+
 - Linux
+
 ```bash
 curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python - --preview
 ```
 
 - Windows
 
-```
+```powershell
 (Invoke-WebRequest -Uri https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py -UseBasicParsing).Content | python - --preview
 ```
 
@@ -50,7 +52,7 @@ curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-
 
 windows、Linuxのどちらの環境でも以下のコマンドを入力してください。
 
-```
+```bash
 poetry self update --preview
 ```
 
@@ -61,7 +63,7 @@ poetry-versing-pluginの追加は非常に簡単です。
 
 最低限必要な項目もpyproject.tomlに追加されます。
 
-```
+```bash
 poetry plugin add poetry-version-plugin
 ```
 
@@ -69,7 +71,7 @@ poetry plugin add poetry-version-plugin
 
 一応、ここまでのインストールを行ったDockerfileを記載しておきます。
 
-```
+```Dockerfile
 FROM python:3.9.7-buster
 
 RUN apt-get update
@@ -104,14 +106,14 @@ pyproject.tomlの中で、poetry-versing-pluginのを記述する必要があり
 
 そのための設定は以下に示す通りです。
 
-```
+```toml
 [tool.poetry-version-plugin]
 source = "init"
 ```
 
 この設定の場合、`__init__.py`に以下の追記を行うと`pyproject.toml`で指定したバージョンに関係なく`__init__.py`で指定したバージョンで上書きされてビルドを行います。
 
-```
+```python
 __version__ = "0.2.3"
 ```
 
@@ -119,10 +121,9 @@ __version__ = "0.2.3"
 
 個人的にはこちらがCDを構築する際にめちゃめちゃ便利で、Releaseアクションとの相性も良いように思います。
 
-
 そのための設定は以下に示す通りです。
 
-```
+```toml
 [tool.poetry-version-plugin]
 source = "git-tag"
 ```
@@ -247,19 +248,18 @@ on:
 
 ここで、x.y.zという文字列をフォームにあらかじめ入れておくことで、管理者はフォーマットを間違えることなくバージョンの入力を促します。
 
-![](https://storage.googleapis.com/zenn-user-upload/5d33defb7821e4bc6a349877.png)
+![workflowsの使用例](https://storage.googleapis.com/zenn-user-upload/5d33defb7821e4bc6a349877.png)
 
 また一応リリースノートに含める文面もこちらで入力できるようにしておきます。
 
 これらの値はそれぞれ`${{ github.event.inputs.version }}`と`${{ github.event.inputs.release_note }}`に格納されています。
-
 
 #### おまじない（リポジトリのクローンとかインストール系）
 
 次にインストール系の作業を行っています。
 これは正直おまじないです。
 
-```
+```yaml
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -296,7 +296,6 @@ jobs:
 PyPIに登録を行うとトークンを作成することができます。
 今回は、作成したトークンをシークレットトークン（`PYPI_TOKEN`という名前）として登録して、それをpoetryに読み込ませています。
 
-
 ```yaml
       - name: PyPI Settings
         run: |
@@ -308,7 +307,6 @@ PyPIに登録を行うとトークンを作成することができます。
 ここでトークンを登録しておくことで、後はpoetryのデフォルト機能で勝手にライブラリを登録公開してくれます。
 
 あらかじめPyPIでプロジェクトなどを作っておく必要もありません。
-
 
 #### poetryでプロジェクトをビルド、パブリッシュする
 
@@ -324,6 +322,7 @@ PyPIに登録を行うとトークンを作成することができます。
 ```
 
 ながれとしては、
+
 1. git tag v+{最初に入力したバージョン}(v0.0.0みたいなフォーマット)でタグを切る
 2. ビルドを行う
 3. パブリッシュする（先ほど指定したトークンのアカウントで自動的に公開される）
@@ -337,7 +336,7 @@ poetryが関係する部分はこちらまでとなります。
 
 `actions/create-release@v1`を使って、GitHubのリリースを作っていきます。
 
-```
+```yaml
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -362,12 +361,12 @@ poetryが関係する部分はこちらまでとなります。
 
 最後にビルドした.whlファイルをリリースに組み込んでおきます
 
-![](https://storage.googleapis.com/zenn-user-upload/b9bac76b3234109906810dbf.png)
+![実際に生成されたリリース](https://storage.googleapis.com/zenn-user-upload/b9bac76b3234109906810dbf.png)
 
 こうしておくことで、こんな感じでリリースからダウンロードすることができます。
 ちょっとかっこいいですね(データの保存の意味でも重要）
 
-```
+```yml
       - name: Get Name of Artifact
         run: |
           ARTIFACT_PATHNAME=$(ls dist/*.whl | head -n 1)
@@ -394,11 +393,10 @@ poetryが関係する部分はこちらまでとなります。
 
 そして最後に`actions/upload-release-asset@v1.0.2`で、PATH、ファイル名とリリースアクションのidを各パラメータに与えることで、リリースにファイルを追加することができます。
 
-
 これにて、github actionsの解説は終了です。
 これでリリースをしたいタイミングでActionsからrun workflowsをぽちっと実行すれば、勝手にPyPIのリリースまでやってくれます。
 
-![](https://storage.googleapis.com/zenn-user-upload/03fd9c2db928e35b737f05d8.png)
+![実際に生成さえたリリース](https://storage.googleapis.com/zenn-user-upload/03fd9c2db928e35b737f05d8.png)
 
 ## 謝辞
 
@@ -406,4 +404,3 @@ poetryが関係する部分はこちらまでとなります。
 
 構築に関わったチームメンバーに感謝するとともに、
 当該リポジトリも観ていただけるとうれしく思います。
-

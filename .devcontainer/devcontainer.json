@@ -5,11 +5,17 @@
     "workspaceFolder": "/workspace",
     "settings": {
         "editor.guides.bracketPairs": true,
-        "editor.bracketPairColorization.enabled": true
+        "editor.bracketPairColorization.enabled": true,
+        "markdown-preview-enhanced.previewTheme": "github-dark.css",
+        "markdownlint.run": "onSave",
+        "[json]": {
+            "editor.formatOnSave": true,   
+        }
     },
     "extensions": [
 		"ms-azuretools.vscode-docker",
 		"njpwerner.autodocstring",
-		"davidanson.vscode-markdownlint"
+		"davidanson.vscode-markdownlint",
+		"shd101wyy.markdown-preview-enhanced"
 	]
 }
