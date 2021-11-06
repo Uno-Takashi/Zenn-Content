@@ -11,3 +11,7 @@ VSCodeの[Remote - Containers](https://marketplace.visualstudio.com/items?itemNa
 リモートコンテナアクセス中は、localhostの8000ポートにZenn Editorをデプロイしています。
 
 [http://localhost:8000/](http://localhost:8000/)
+
+## articles
+
+[poetry-versing-pluginによる動的バージョン付けを使ったCD構築[github actions]](https://zenn.dev/u_not/articles/abcc0ebd71655b/)
