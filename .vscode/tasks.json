@@ -2,18 +2,19 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Hllo World",
-            "detail": "Hello World と出力するだけです。",
-            "type": "shell", // シェルコマンドを実行する
-            "command": "echo", // 実行するコマンド
-            "args": [ // コマンドへ渡す引数
-                "Hello World"
+            "label": "Create Article",
+            "detail": "記事を作成します。",
+            "type": "shell", 
+            "command": "npx", 
+            "args": [ 
+                "zenn",
+                "new:article"
             ],
-            "group": "build", // ビルドタスクとして認識させる
+            "group": "build", 
             "presentation": {
-                "reveal": "always", // Terminal パネルを必ず開く
-                "clear": true, // 実行前に Terminal をクリア
-                "echo": false // タスク名をエコー表示しない
+                "reveal": "always",
+                "clear": true,
+                "echo": false
             },
             "problemMatcher": []
         },
