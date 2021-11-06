@@ -52,6 +52,8 @@ Qiitaから移民して驚いたのですが、[Zenn CLI](https://zenn.dev/zenn/
 
 これ以降はしばらく、どのように設定を作るのかについて説明します。
 
+まず事前準備として、GitHubで`README.md`以外は空のリポジトリを作り、ローカルにクローンしてください。
+
 ## Remote Containersとは？
 
 Remote Containersとは、VSCodeのプラグインです。
@@ -60,7 +62,21 @@ Remote Containerでは、Dockerコンテナ環境でVSCodeを開き、コンテ�
 
 ![Remote - Container](https://storage.googleapis.com/zenn-user-upload/9867fb4f14db656f56c9e23d.png)
 
-この拡張機能は、Dockerコンテナの持つ再配布性と環境分離能力、容易性をVSCodeのワークスペースに拡張することができます。
+Remote Containersは、Dockerコンテナの持つ再配布性と環境分離能力をVSCodeのワークスペースに拡張できます。
+
+ざっくりと言ってしまえば、各プロジェクトごとに実行環境と拡張機能とエディタ設定を作れるという事です。
+
+### インストールと推薦事項に追加
+
+まず、ローカル環境にRemote Containersをインストールします。
+
+![Remote Containersのインストール](https://storage.googleapis.com/zenn-user-upload/1d4650f3547c8fe6055de12c.png)
+
+VSCodeの拡張機能欄から検索しインストールします。
+
+同時にワークスペースの推薦事項に追加しておきます。
+
+![推薦事項に追加](https://storage.googleapis.com/zenn-user-upload/1806397c44738da420632db0.png)
 
 ## 作ったテンプレートで執筆を始める
 
