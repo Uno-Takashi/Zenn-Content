@@ -1,6 +1,6 @@
 FROM node:17.0 
 
-WORKDIR /workspace/
+WORKDIR /zenn-workspace/
 
 RUN npm install -g \
     textlint \

@@ -8,7 +8,7 @@ services:
     container_name: 'zenn-server'
     tty: true
     volumes:
-      - ./:/workspace
+      - ./:/zenn-workspace
     ports:
       - "8000:8000"
     command: sh entrypoint.sh

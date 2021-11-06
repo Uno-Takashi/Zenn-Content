@@ -18,5 +18,22 @@
             },
             "problemMatcher": []
         },
+        {
+            "label": "Create Book",
+            "detail": "本を作成します。",
+            "type": "shell", 
+            "command": "npx", 
+            "args": [ 
+                "zenn",
+                "new:book"
+            ],
+            "group": "build", 
+            "presentation": {
+                "reveal": "always",
+                "clear": true,
+                "echo": false
+            },
+            "problemMatcher": []
+        },
     ]
 }

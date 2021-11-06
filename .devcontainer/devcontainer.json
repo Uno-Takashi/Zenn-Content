@@ -2,7 +2,7 @@
     "name": "Zenn Content",
     "dockerComposeFile": "../docker-compose.yml",
     "service": "zenn-server",
-    "workspaceFolder": "/workspace",
+    "workspaceFolder": "/zenn-workspace",
     "settings": {
         "editor.guides.bracketPairs": true,
         "editor.bracketPairColorization.enabled": true,
