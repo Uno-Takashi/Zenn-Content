@@ -8,7 +8,7 @@ published: true
 
 ## poetryでパッケージビルド時に動的にバージョンを付与したい
 
-poetryは、（個人的に）今一番熱いパッケージ管理ツールです。
+poetryは、（個人的に）今一番熱いPythonのパッケージ管理ツールです。
 
 poetryでのビルド時には、`pyproject.toml`にてversionを指定する必要があります。
 
