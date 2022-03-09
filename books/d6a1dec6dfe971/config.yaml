@@ -1,4 +1,4 @@
-title: "django-channelsで作る非同期通信アプリケーション入門"
+title: "django-channelsとdockerで作る非同期アプリケーション実践チュートリアル"
 summary: "djangoにおいて非同期通信を行うためのライブラリである、django-channelsを使ってwebsocketを用いた非同期アプリケーションのデプロイまで行います。"
 topics: []
 published: false
