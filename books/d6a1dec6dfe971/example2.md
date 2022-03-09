@@ -1,8 +1,10 @@
 ---
-title: "2. 環境構築"
+title: "2. モダンな環境を構築しよう"
 ---
 
 # Django環境構築 with Channels
+
+本章において構築した環境は以下のリポジトリのchapter2フォルダに格納しています。
 
 ## 環境の概要
 
@@ -17,14 +19,24 @@ websocketを実行したい場合、ウェブサーバーやウェブアプリ�
 ひとまず、主要な技術としては以下の構成を目指します。
 
 - ウェブサーバー
-  - nginx
+  - [nginx](https://www.nginx.com/)
 - データベース
-  - mysql
+  - [MySQL](https://www.mysql.com/jp/)
 - KVS
-  - redis
+  - [Redis](https://redis.io/)
 - ウェブアプリケーション
-  - django(4.0^)
+  - [Python](https://www.python.org/) ( 3.10^ )
+  - django( 4.0^ )
   - channels
   - gunicorn
   - uvicorn
   - poetry
+
+![構成](/images/django-channels-book/structure.png)
+
+これらの必要なコンテナが、1コマンドで立ち上げられるように[Docker Compose](https://docs.docker.com/compose/)を使用します。
+`docker-compose up -d`で立ち上げたら、コンテナが自動で立ち上がり、サービスにアクセス可能な状態を構築することを考えます。
+
+このうち、nginx、mysql、redisは[Docker Hub](https://hub.docker.com/)にて公式イメージが提供されています。そのため、公式のイメージをそのまま使い、設定ファイルを入れ込むだけで完成します。
+
+djangoコンテナはpythonのベースイメージから必要なライブラリをpoetryを用いてインストールして作成するために、`Dockerfile`を作成します。
