@@ -25,9 +25,9 @@ title: "2. モダンな環境を構築しよう"
 
 また、実運用を見越してウェブサーバーやasgiサーバーを導入した本格的な構成の環境を構築し使用します。
 
-とはいえ、本書はdjang-channelsのチュートリアルであって、djangoのチュートリアルではありません。そのため、djangoの環境構築方法については説明せずに、djangoの最低限の設定とつなぎこみを行った環境を配布します。
+とはいえ、本書はDjang Channelsのチュートリアルであって、Djangoのチュートリアルではありません。そのため、Djangoの環境構築方法については説明せずに、Djangoの最低限の設定とつなぎこみを行ったコンテナ環境を配布します。
 
-本章では、配布した環境を基にして、そこからdjango-channelsの環境を構築していく方法を示します。
+2章では、配布したDocker環境を基にして、そこからdjango-channelsの環境を構築していく方法を示します。
 
 ### 使用技術・目標構成
 
@@ -56,26 +56,84 @@ title: "2. モダンな環境を構築しよう"
 
 djangoコンテナはpythonのベースイメージから必要なライブラリをpoetryを用いてインストールして作成するために、`Dockerfile`を作成します。
 
-## コンテナ作成
+## Dockerコンテナ立ち上げ
 
 ひとまず、最低限の設定を行っている状態のコンテナを立ち上げてみましょう。
 
-まずは任意の作業ディレクトリを作成しその中に移動してください
+### gitからプロジェクトをクローンしてくる
 
-```bash
-mkdir backend
-cd backend
+まずはgitを使ってサンプルプロジェクトをクローンしてきます。
+
+[Uno-Takashi/Django-Channels-Book: 『django-channelsで作る非同期通信アプリケーション入門』のサンプルコード置き場](https://github.com/Uno-Takashi/Django-Channels-Book)
+
+作業用の任意のディレクトリに移動したのち以下のコマンドを実行します。
+
+```
+git clone https://github.com/Uno-Takashi/Django-Channels-Book.git
 ```
 
-ディレクトリの分け方に明確なルールは存在しません。本書ではコンテナ単位でディレクトリを区切る事にします。フレームワーク名やイメージ名をそのままディレクトリ名として使用し、4つのディレクトリを作成します。
+すると中にはChapterごとに分けられたディレクトが存在します。
 
-```bash
-mkdir Django
-mkdir nginx
-mkdir mySQL
-mkdir redis
+```
+cd Django-Channels-Book
+ls
 ```
 
-### mysqlコンテナ設定
+それぞれのディレクトリにははChapterが終わった時の成果物が格納されています。
+従って、本章で使う最低限の環境はChapter1になりますのでcdコマンドでChapter1に移動します。
 
-まずは、設定が一番簡単な、mysqlコマ
+(Chapter2には『2章が終わった直後』のコードが格納されていますので注意してください)
+
+```bash
+cd Chapter1
+```
+
+軽くtreeコマンドで中身を確認してみましょう。
+
+```bash
+tree -L 3
+.
+├── .gitignore
+├── Django
+│   ├── .env.django
+│   ├── .gitignore
+│   ├── Dockerfile
+│   ├── channels_tutorial
+│   ├── db.sqlite3
+│   ├── entorypoint.sh
+│   ├── gunicorn.conf.py
+│   ├── manage.py
+│   ├── pyproject.toml
+│   └── static
+├── MySQL
+│   ├── .env.mysql
+│   ├── .gitignore
+│   ├── data
+│   └── my.cnf
+├── Redis
+│   └── .redis.env
+├── docker-compose.yml
+└── nginx
+    ├── .gitignore
+    ├── mime.types
+    └── nginx.conf
+```
+
+すると、先ほどの図１で用意した、コンテナ単位でディレクトリが作成されているかと思います。
+
+### django-channelsのインストール
+
+立ち上げたDjangoコンテナにdjango-channelsをインストールします。
+Djangoコンテナではpipではなくpoetryというパッケージマネージャーを使っています。
+
+poetry環境では、`poerty add PACKAGE`を実行するとpyproject.tomlファイルに必要なパッケージが書き込まれます。pyproject.tomlはpipで言うところのrequirement.txtの役割を持ち、そのプロジェクトに必要なパッケージを記載しておきます。
+
+```
+docker-compose exec django 
+```
+
+皆さんが独自に用意している環境にpipを使ってインストールしたいのであれば、以下のコマンドを入力してください。
+
+```
+pip install django-channels
+```
