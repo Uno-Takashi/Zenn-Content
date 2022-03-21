@@ -23,9 +23,9 @@ title: "1. そもそも非同期通信って何だろう？"
 
 ## websocketとは？
 
-以前はhttp上で双方向通信を実現するために、様々な工夫が施されていました。
+インターネットの歴史では、http上で双方向通信を実現するために様々な工夫が施されていました。
 
-html5以前では、httpロングポーリングやajax、cometといった技術を用いることで、クライアントサーバー型の通信方式を維持したまま、論理的には双方向通信を実現する手法が主流でした。
+html5以前では、httpロングポーリングやajax、cometといった技術を用いることで、クライアントサーバー型の通信プロトコルを維持したまま、論理的には双方向通信を実現する手法が主流でした。
 
 しかしながら、これらの方法は結局のところHTTP上に成り立っているため、各通信ごとにヘッダーファイルのやり取りや、サーバーの状態を確認するためだけの通信が発生することになります。そのため、トラフィックやリソース消費の増大といったデメリットを抱えていました。
 
@@ -38,21 +38,23 @@ websoketとはこうした双方向通信手法の問題点を解決しつつも
 
 asgiについて知るためには、まずはwsgi(Web Server Gateway Interface)について知っていなければなりません。wsgiとはpythonにおいてwebサーバーとwebアプリケーションが通信するための標準化された規格です。
 
-asgi（Asynchronous Server Gateway Interface）とはwsgiの精神的な後続として開発されている、インターフェースになります。asgiはdjango projectが提案しており、その名の通りAsynchronous(非同期)処理をサポートしています。
+Djangoでは一般的にはwsgiを使ってwebサーバーと通信が行われます。`django-admin startproject mysite`を実行した場合、作成したプロジェクトディレクトリの中にはデフォルトで`wsgi.py`が格納されているはずです。
 
-また、Django Projectが監理する規格ではありますが、[FastAPI](https://fastapi.tiangolo.com/)や[quart](https://github.com/pgjones/quart)でも採用されています。
+それに対して、asgi（Asynchronous Server Gateway Interface）とはwsgiの精神的な後続として開発されている、インターフェースです。asgiはDjango Projectが提案しており、その名の通りAsynchronous(非同期)処理をサポートしています。
+
+また、Django Projectが監理する仕様ではありますが、asgiはDjangoからは切り離された単独のインターフェースであり、Djangoでしか使えないわけではありません。実際に[FastAPI](https://fastapi.tiangolo.com/)や[quart](https://github.com/pgjones/quart)ではasgiを採用しています。
 
 asgiサーバーとしては[Uvicorn](https://www.uvicorn.org/)、[Hypercorn](https://pgjones.gitlab.io/hypercorn/index.html)、[daphne](https://github.com/django/daphne)が[asgiのドキュメント](https://asgi.readthedocs.io/en/latest/implementations.html)に記載されています。
 
 ## django-channelsとは？
 
-django-channelsとはdjangoにおいてasgiアプリケーションを開発するためのライブラリになります。
+django-channelsとはDjangoにおいてasgiアプリケーションを開発するためのライブラリになります。
 
 djangoとは別途でインストールする必要があるため、サードパーティー製アプリケーションのように見えますが、djangoのコアメンバーが開発に関係しているライブラリになります。
 
-従ってchannelsのGithubリポジトリもdjangoと同様のorganaization内に存在している、事実上の公式ライブラリであり、Djangoにおいて非同期通信を実装したい場合のデファクトスタンダードでもあります。
+従ってchannelsのGithubリポジトリ[channelsのGithubリポジトリ](https://github.com/django/channels/blob/76fddba32b3abdfeb390e219e3fbf11f282c95cc/docs/index.rst)もdjangoと同様のorganaization内に存在している、事実上の公式機能であり、Djangoにおいて非同期通信を実装したい場合のデファクトスタンダードです。
 
-また、本書においては、websocketを実装するためのツールとして利用しますが、django-channels自体はwebsocketに限定されたライブラリではありません。
+また、本書においては、websocketを実装するためのツールとして利用しますが、django-channels自体はwebsocketの実装に限定されたライブラリではありません。
 
 # チャットアプリにおける懸念事項
 
