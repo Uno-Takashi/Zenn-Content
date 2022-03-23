@@ -158,16 +158,16 @@ Djangoコンテナではpipではなくpoetryというパッケージマネー�
 
 poetry環境では、`poerty add PACKAGE`を実行すると環境にパッケージをインストールしたのちに、pyproject.tomlファイルに必要なパッケージが書き込まれます。pyproject.tomlはpipで言うところのrequirement.txtの役割を持ち、そのプロジェクトに必要なパッケージを記載しておきます。
 
-まずは、Djangoコンテナでpoetryを使ってdjango channelsをインストールします。
+まずは、Djangoコンテナでpoetryを使ってdjango channelsをインストールします。同時に、redisをchannelsのバックエンドとして使うためにchannels-redisをインストールします。
+
+```
+docker-compose exec django poetry add channels channels-redis
+```
 
 :::message alert
 django-channelsというchannelsとは別のライブラリが存在します。
-気を付けてください。
+間違えてインストールしないようにしましょう。
 :::
-
-```
-docker-compose exec django poetry add channels
-```
 
 pyproject.tomlはDockerfileで読み込んでいるため、再び環境のビルドを行い、新規で立ち上げ直します。
 
@@ -191,7 +191,7 @@ constantly        15.1.0  Symbolic constants in Python
 
 また、pyproject.tomlを確認してみると、poetry.dependenciesの最後にdjango-channelsが追加されていることが確認できます。
 
-```toml
+```diff toml
 [tool.poetry.dependencies]
 python = "^3.10"
 Django = "^4.0.0"
@@ -199,13 +199,57 @@ gunicorn = "^20.1.0"
 mysqlclient = "^2.1.0"
 uvicorn = {extras = ["standard"], version = "^0.16.0"}
 pydantic = "^1.9.0"
-channels = "^3.0.4"
++channels = "^3.0.4"
++channels-redis = "^3.4.0"
 ```
 
 これ以外のパッケージも必要に応じて同様の手順でインストールできます。また、poetryでは自動的にバージョンによる依存関係を確認して、適切なバージョンを引っ張ってきてくれますので、中長期的な運用を見据えて導入を検討するのもよいかと思います。
 
-ちなみに皆さんが独自に用意している環境にpipを使ってインストールしたいのであれば、以下のコマンドで可能です。
+ちなみに皆さんが独自に用意している環境にpipを使ってインストールしたいのであれば、以下のコマンドでインストール出来ます。
 
 ```bash
 pip install channels
 ```
+
+### settings.pyの変更
+
+settings.pyを編集して、channelsの有効化、redisへの接続の二つを行います。
+
+#### INSTALL_APPの追加
+
+先ほど環境にインストールしたdjango channelsをINSTALLED_APPSに追加します。
+
+```diff python
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
++   'channels'
+]
+```
+
+#### redisへの接続
+
+django channelsでは、接続状態など一時的に保持すべき情報を監理するためのバックエンドを必要とします。設定を行ってしまえば、開発時にバックエンドの存在を意識することはほとんどありません。
+
+公式ドキュメントでは、Django公式が開発しているchannels_redisを使用する方法を記載しているためそれに準拠します。
+
+```diff python
++CHANNEL_LAYERS = {
++   "default": {
++       "BACKEND": "channels_redis.core.RedisChannelLayer",
++       "CONFIG": {"hosts": [("redis", 6379)]},
++   }
++}
+```
+
+:::message
+[channels_postgres](https://github.com/danidee10/channels_postgres)などのサードパーティー製ライブラリを用いることで、Redis以外をバックエンドに用いることができます。
+:::
+
+:::message alert
+バックエンドにインメモリを用いることができますが、スケーラビリティの観点から、本番環境での使用は想定されていません。インメモリはマルチインスタンス環境では最適な動作を行えません。テストなど限定された用途で用いるべきです。
+:::
