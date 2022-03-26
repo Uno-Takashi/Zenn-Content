@@ -7,7 +7,7 @@ title: "1. そもそも非同期通信って何だろう？"
 
 ## 概要
 
-この章では、すでにご承知の人も多いでしょうが『ウェブソケットとは何か？』『django-channelsとは何か？』といった前提知識を共有して行きます。本章を通して、WebsocketやDjango-channelsの歴史的経緯、django-channelsをアプリケーションに導入するメリットデメリットなどの基礎的な概要をご理解頂ければ幸いに思います。
+この章では、すでにご承知の人も多いでしょうが『ウェブソケットとは何か？』『Django Channelsとは何か？』といった前提知識を共有して行きます。本章を通して、WebsocketやDjango Channelsの歴史的経緯、Django Channelsをアプリケーションに導入するメリットデメリットなどの基礎的な概要をご理解頂ければ幸いに思います。
 
 従って、本章は技術に関する座学的な内容になります。「すでに知っているよ」「まずは作って覚える」という人は飛ばしていただいて構いません。
 
@@ -46,15 +46,15 @@ Djangoでは一般的にはwsgiを使ってwebサーバーと通信が行われ�
 
 asgiサーバーとしては[Uvicorn](https://www.uvicorn.org/)、[Hypercorn](https://pgjones.gitlab.io/hypercorn/index.html)、[daphne](https://github.com/django/daphne)が[asgiのドキュメント](https://asgi.readthedocs.io/en/latest/implementations.html)に記載されています。
 
-## django-channelsとは？
+## Django Channelsとは？
 
-django-channelsとはDjangoにおいてasgiアプリケーションを開発するためのライブラリになります。
+Django ChannelsとはDjangoにおいてasgiアプリケーションを開発するためのライブラリになります。
 
 djangoとは別途でインストールする必要があるため、サードパーティー製アプリケーションのように見えますが、djangoのコアメンバーが開発に関係しているライブラリになります。
 
 従ってchannelsのGithubリポジトリ[channelsのGithubリポジトリ](https://github.com/django/channels/blob/76fddba32b3abdfeb390e219e3fbf11f282c95cc/docs/index.rst)もdjangoと同様のorganaization内に存在している、事実上の公式機能であり、Djangoにおいて非同期通信を実装したい場合のデファクトスタンダードです。
 
-また、本書においては、websocketを実装するためのツールとして利用しますが、django-channels自体はwebsocketの実装に限定されたライブラリではありません。
+また、本書においては、websocketを実装するためのツールとして利用しますが、Django Channels自体はwebsocketの実装に限定されたライブラリではありません。
 
 # チャットアプリにおける懸念事項
 

@@ -2,13 +2,13 @@
 title: "2. モダンな環境を構築しよう"
 ---
 
-# Django-Channels環境構築 with Docker
+# Django Channels環境構築 with Docker
 
 本章において構築した環境は以下のリポジトリのchapter2フォルダに格納しています。
 
-[Uno-Takashi/Django-Channels-Book: 『django-channelsで作る非同期通信アプリケーション入門』のサンプルコード置き場](https://github.com/Uno-Takashi/Django-Channels-Book)
+[Uno-Takashi/Django Channels-Book: 『django-channelsで作る非同期通信アプリケーション入門』のサンプルコード置き場](https://github.com/Uno-Takashi/Django-Channels-Book)
 
-本章では、Dockerで構築したDjango環境に対して、django-channelsを追加し、asgiアプリケーションとして動作させる設定を行います。
+本章では、Dockerで構築したDjango環境に対して、Django Channelsを追加し、asgiアプリケーションとして動作させる設定を行います。
 
 ## 必須ソフトインストール
 
@@ -31,7 +31,7 @@ title: "2. モダンな環境を構築しよう"
 
 とはいえ、本書はDjang Channelsのチュートリアルであって、Djangoのチュートリアルではありません。そのため、Djangoの環境構築方法については説明せずに、Djangoの最低限の設定とつなぎこみを行ったコンテナ環境を配布します。
 
-2章では、配布したDocker環境を基にして、そこからdjango-channelsの環境を構築していく方法を示します。
+2章では、配布したDocker環境を基にして、そこからDjango Channelsの環境を構築していく方法を示します。
 
 ### 使用技術・目標構成
 
@@ -151,9 +151,9 @@ nginx               "/docker-entrypoint.…"   nginx               running      
 
 また、80ポートからのアクセスはnginxを経由してのアクセスになりますが、8080ポートにはデバッグ用にDjangoコンテナをホストしています。そのため、[localhost:8080](http://localhost:8080/)にアクセスしても同様の画面が表示されます。
 
-### django-channelsのインストール
+### Django Channelsのインストール
 
-立ち上げたDjangoコンテナにdjango-channelsをインストールします。
+立ち上げたDjangoコンテナにDjango Channelsをインストールします。
 Djangoコンテナではpipではなくpoetryというパッケージマネージャーを使っています。
 
 poetry環境では、`poerty add PACKAGE`を実行すると環境にパッケージをインストールしたのちに、pyproject.tomlファイルに必要なパッケージが書き込まれます。pyproject.tomlはpipで言うところのrequirement.txtの役割を持ち、そのプロジェクトに必要なパッケージを記載しておきます。
@@ -177,7 +177,7 @@ docker-compose build
 docker-compose up -d
 ```
 
-`poetry show`コマンドを使ってインストールされているパッケージを可視化してみると、ビルドしなおした環境にdjango-channelsが追加されていることが確認できます。
+`poetry show`コマンドを使ってインストールされているパッケージを可視化してみると、ビルドしなおした環境にDjango Channelsが追加されていることが確認できます。
 
 ```bash
 docker-compose exec django poetry show
@@ -189,7 +189,7 @@ click             8.0.4   Composable command line interface toolkit
 constantly        15.1.0  Symbolic constants in Python
 ```
 
-また、pyproject.tomlを確認してみると、poetry.dependenciesの最後にdjango-channelsが追加されていることが確認できます。
+また、pyproject.tomlを確認してみると、poetry.dependenciesの最後にDjango Channelsが追加されていることが確認できます。
 
 ```diff toml
 [tool.poetry.dependencies]
