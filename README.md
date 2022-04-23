@@ -10,7 +10,7 @@ zennの記事を格納するためのリポジトリ
 
 ## Usage
 
-VSCodeの[Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)を使用して、プロジェクトを開くと、拡張機能導入済みの環境で執筆することができます。
+VSCodeの[Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)を使用して、プロジェクトを開くと、拡張機能導入済みの環境で執筆できます。
 
 ## View Content
 
