@@ -3,56 +3,59 @@ title: "1. そもそも非同期通信って何だろう？"
 ---
 
 
-# django channelsって何だろう？
+# Django Channelsって何だろう？
 
 ## 概要
 
-この章では、すでにご承知の人も多いでしょうが『ウェブソケットとは何か？』『Django Channelsとは何か？』といった前提知識を共有して行きます。本章を通して、WebsocketやDjango Channelsの歴史的経緯、Django Channelsをアプリケーションに導入するメリットデメリットなどの基礎的な概要をご理解頂ければ幸いに思います。
+この章では、すでにご承知の人も多いでしょうが『websocketとは何か？』『Django Channelsとは何か？』といった前提知識を共有して行きます。1章を通して、WebsocketやDjango Channelsの歴史的経緯、Django Channelsをアプリケーションに導入するメリットデメリットなどの基礎的な概要をご理解いただきたいです。
 
-従って、本章は技術に関する座学的な内容になります。「すでに知っているよ」「まずは作って覚える」という人は飛ばしていただいて構いません。
+従って、1章は技術に関する**座学的な内容**になります。「すでに知っているよ」「まずは作って覚える」という人は飛ばしていただいて構いません。
 
-## 双方向非同期とは
+## 双方向通信・非同期通信とは
 
-双方向通信とは、
+HTTP/HTTPSによるクライアント／サーバ型のウェブサービスでは、クライアント側（ブラウザ）がリクエストを送信し、サーバー側はレスポンスを返すことによってデータの送受信を行います。このような片側が起点となり通信を開始する方式を単方向通信と言います。HTTPの世界では基本的に通信の起点はクライアント側でなくてはなりません。
 
-一般的なクライアントサーバー型のウェブサービスでは、クライアント側（ブラウザ）がリクエストを送信し、サーバー側はレスポンスを返すことによってデータの送受信を行います。すなわち通信の起点は必ずクライアント側でなくてはなりません。
+しかしながら、サーバー側を起点にしてデータを送信したいというニーズが存在します。例えばチャットやSNSでは、クライアントの更新要求を待たずに、サーバーにデータが追加されたことを起点にしてデータの送受信を行いたいはずです。
 
-しかしながら、サーバー側を起点にしてデータを送信したいというニーズが存在します。例えばチャットやSNSでは、クライアントの更新を待たずに、サーバーにデータが追加されたことを起点にしてデータの送受信を行いたいはずです。
-
-このような需要を満たすため、クライアント、サーバーの双方が通信の起点となることが出来る通信方式を双方向通信になります。
+このような需要を満たすため、クライアント/サーバーの双方が通信の起点となることが出来る通信方式を双方向通信になります。
 
 ## websocketとは？
 
 インターネットの歴史では、http上で双方向通信を実現するために様々な工夫が施されていました。
 
-html5以前では、httpロングポーリングやajax、cometといった技術を用いることで、クライアントサーバー型の通信プロトコルを維持したまま、論理的には双方向通信を実現する手法が主流でした。
+HTML5以前では、HTTPロングポーリングやajax、cometといった技術を用いることで、クライアント／サーバー型の通信プロトコルを維持したまま、論理的に双方向通信を実現する手法が主流でした。
 
 しかしながら、これらの方法は結局のところHTTP上に成り立っているため、各通信ごとにヘッダーファイルのやり取りや、サーバーの状態を確認するためだけの通信が発生することになります。そのため、トラフィックやリソース消費の増大といったデメリットを抱えていました。
 
-websoketとはこうした双方向通信手法の問題点を解決しつつもHTTPのメリットを維持した、単一のプロトコルです。
+websoketとはこうした双方向通信手法の問題点を解決しつつHTTPのメリットを維持した、単一のプロトコルです。
 
-まずwebsocketではHTTP/HTTPSと同様の方法でハンドシェイク(通信の確立)を行います。
+まずwebsocketではHTTP/HTTPSと同様の方法でクライアント起点でのハンドシェイク(通信の確立)を行います。
 その後、HTTP/HTTPSであれば、通信の修了後はセッションを切断しますが、websocketではセッションを維持し続けます。
+もちろん、初めのハンドシェイクはクライアント起点の単方向で行う必要があります（むしろそうでなかったら、クライアントがいつの間にか未知のサーバとwebsocketを繋げてしまいます）。しかしながら、ハンドシェイクを確立してしまえば、後はデータのみを送信すればいいため低コストで双方向通信/非同期通信を実現できます。
 
 ## asgiアプリケーションとは？
 
-asgiについて知るためには、まずはwsgi(Web Server Gateway Interface)について知っていなければなりません。wsgiとはpythonにおいてwebサーバーとwebアプリケーションが通信するための標準化された規格です。
+asgiについて知るためには、まずは**wsgi(Web Server Gateway Interface)**について知っていなければなりません。wsgiとはPythonにおいてwebサーバーとwebアプリケーションが通信するための標準化された規格です。
 
 Djangoでは一般的にはwsgiを使ってwebサーバーと通信が行われます。`django-admin startproject mysite`を実行した場合、作成したプロジェクトディレクトリの中にはデフォルトで`wsgi.py`が格納されているはずです。
 
-それに対して、asgi（Asynchronous Server Gateway Interface）とはwsgiの精神的な後続として開発されている、インターフェースです。asgiはDjango Projectが提案しており、その名の通りAsynchronous(非同期)処理をサポートしています。
+それに対して、asgi（Asynchronous Server Gateway Interface）とはwsgiの精神的な後続として開発されている、インタフェースです。asgiはDjango Projectが提案しており、その名の通りAsynchronous(非同期)処理をサポートしています。
 
 また、Django Projectが監理する仕様ではありますが、asgiはDjangoからは切り離された単独のインターフェースであり、Djangoでしか使えないわけではありません。実際に[FastAPI](https://fastapi.tiangolo.com/)や[quart](https://github.com/pgjones/quart)ではasgiを採用しています。
 
 asgiサーバーとしては[Uvicorn](https://www.uvicorn.org/)、[Hypercorn](https://pgjones.gitlab.io/hypercorn/index.html)、[daphne](https://github.com/django/daphne)が[asgiのドキュメント](https://asgi.readthedocs.io/en/latest/implementations.html)に記載されています。
 
+本書では、Djangoとgunicornの橋渡し程度に理解していただければ問題なく先に進むことができます。より詳細な内容を正しく知る必要があるのであれば、asgi公式ドキュメントを参照してください。
+
+[ASGI Documentation — ASGI 3.0 documentation](https://asgi.readthedocs.io/en/latest/)
+
 ## Django Channelsとは？
 
 Django ChannelsとはDjangoにおいてasgiアプリケーションを開発するためのライブラリになります。
 
-djangoとは別途でインストールする必要があるため、サードパーティー製アプリケーションのように見えますが、djangoのコアメンバーが開発に関係しているライブラリになります。
+Djangoとは別途でインストールする必要があるため、サードパーティー製アプリケーションのように見えますが、Djangoのコアメンバーが開発に関係しているライブラリになります。
 
-従ってchannelsのGithubリポジトリ[channelsのGithubリポジトリ](https://github.com/django/channels/blob/76fddba32b3abdfeb390e219e3fbf11f282c95cc/docs/index.rst)もdjangoと同様のorganaization内に存在している、事実上の公式機能であり、Djangoにおいて非同期通信を実装したい場合のデファクトスタンダードです。
+従ってDjango ChannelsのGithubリポジトリ[channelsのGithubリポジトリ](https://github.com/django/channels/blob/76fddba32b3abdfeb390e219e3fbf11f282c95cc/docs/index.rst)もDjangoと同様のorganaization内に存在している、事実上の公式機能であり、Djangoにおいて非同期通信を実装したい場合のデファクトスタンダードです。
 
 また、本書においては、websocketを実装するためのツールとして利用しますが、Django Channels自体はwebsocketの実装に限定されたライブラリではありません。
 

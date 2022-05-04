@@ -23,3 +23,9 @@ VSCodeの[Remote - Containers](https://marketplace.visualstudio.com/items?itemNa
 投降済みの記事になります。
 
 [poetry-versing-pluginによる動的バージョン付けを使ったCD構築[github actions]](https://zenn.dev/u_not/articles/abcc0ebd71655b/)
+
+## markdown
+
+以下のリンクにzennのmarkdown記法が書かれています。
+
+@[card](https://zenn.dev/zenn/articles/markdown-guide)
