@@ -1,7 +1,16 @@
 {
   "filters": {},
-  "rules": {    
+  "rules": {
     "preset-ja-spacing": true,
-    "preset-ja-technical-writing": true,
-    "spellcheck-tech-word": true}
+    "spellcheck-tech-word": true,
+    "preset-ja-technical-writing": {
+      "max-kanji-continuous-len": {
+        "max": 8
+      },
+      "max-ten": {
+        "max": 5
+      },
+      "max": 150
+    }
+  }
 }

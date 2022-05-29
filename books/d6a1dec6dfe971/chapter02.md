@@ -1,5 +1,5 @@
 ---
-title: "2. モダンな環境を構築しよう"
+title: "2. モダンなChannels環境を構築しよう"
 ---
 
 # Django Channels環境構築 with Docker
@@ -25,11 +25,12 @@ title: "2. モダンな環境を構築しよう"
 ## 環境の概要
 
 何はともあれ環境構築していきます。
+
 本書では、スケーラビリティと環境差分について考慮して[Docker](https://www.docker.com/)、[Docker Compose](https://docs.docker.com/compose/)で開発します。
 
 また、実運用を見越してウェブサーバーやasgiサーバーを導入した本格的な構成の環境を構築し使用します。
 
-とはいえ、本書はDjango Channelsのチュートリアルであって、Djangoのチュートリアルではありません。そのため、Djangoの環境構築方法については説明せずに、Djangoの最低限の設定とつなぎこみを行ったコンテナ環境を配布します。
+とはいえ、本書は**Django Channelsのチュートリアルであって、Djangoのチュートリアルではありません**。そのため、Djangoの環境構築方法については説明せずに、Djangoの最低限の設定とつなぎこみを行ったDockerコンテナ環境を配布します。
 
 2章では、配布したDocker環境を基にして、そこからDjango Channelsの環境を構築していく方法を示します。
 
@@ -184,6 +185,10 @@ docker-compose build
 docker-compose up -d
 ```
 
+:::message alert
+ここでビルドしておかないと再び立ち上げたときに、channelsがインストールされていない状態で立ち上げってしまいます。
+:::
+
 `poetry show`コマンドを使ってインストールされているパッケージを可視化してみると、ビルドしなおした環境にDjango Channelsが追加されていることが確認できます。
 
 ```bash
@@ -294,11 +299,13 @@ gunicorn.conf.pyでも同様にasgi.pyを参照していません。そこでgui
 +worker_class = "uvicorn.workers.UvicornWorker"
 ```
 
-ここまで設定すると『なんでgunicorn使ってるねん!!全部uvicornでええじゃん』って話になってしまいます。しかしながら、gunicornを経由してuvicornを使用することにメリットが存在します。
+ここまで設定すると『なんでgunicorn使ってるねん!!全部uvicornでええじゃん』って話になってしまいます。しかしながら、**gunicornを経由してuvicornを使用**することにメリットが存在します。
 
-gunicornは枯れた技術であるため、安定感のあるワーカー管理には定評があります。worker_classにuvicornを指定することにより、各ワーカーは最新技術を搭載したのuvicornで動作し、その管理は枯れた技術であるgunicornで行う事でいいとこどりが出来ます。
+gunicornは枯れた技術であるため、安定感のあるワーカー管理には定評があります。worker_classにuvicornを指定することにより、各ワーカーは最新技術を搭載したのuvicornで動作し、その管理は枯れた技術であるgunicornで動作します。これにより、UvicornとGunicornのいいとこどりが出来るのです。
 
-ただこの辺の技術動向は執筆時(2022年4月)での話であり、時代のトレンドに合わせた方法を読者には選択してもらいたいです。
+:::message
+この辺の技術動向は執筆時(2022年4月)での話であり、時代のトレンドに合わせた方法を読者には選択してもらいたいです。
+:::
 
 #### settigs.pyに追記
 
@@ -317,7 +324,7 @@ gunicornは枯れた技術であるため、安定感のあるワーカー管理
 
 runserverを行った場合に、asgiアプリケーションとして動作していることを確認します。
 
-```diff env
+```diff env: .env.django
 -DEBUG=0
 +DEBUG=1
 ```
@@ -344,8 +351,13 @@ Django  | Quit the server with CONTROL-C.
 docker-compose exec django poetry run python manage.py shell
 ```
 
+shellに対して以下のコマンドを入力します。
+
 ```pycon
-import channels.layers
-channel_layer = channels.layers.get_channel_layer()
-channel_layer
+>>> import channels.layers
+>>> channel_layer = channels.layers.get_channel_layer()
+>>> channel_layer
+<channels_redis.core.RedisChannelLayer object at 0x7f422b7a7c10>
 ```
+
+この状態で、channel_layerを取得できていれば、channelsはRedisをバックエンドとして問題無く動作しています。

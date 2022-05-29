@@ -1,9 +1,10 @@
 title: "Django Channelsとdockerで作る非同期アプリケーション実践チュートリアル"
 summary: "djangoにおいて非同期通信を行うためのライブラリである、Django Channelsを使ってwebsocketを用いた非同期アプリケーションのデプロイまで行います。"
-topics: []
+topics: ["django","channels","非同期通信","チュートリアル"]
 published: false
 price: 0 # 有料の場合200〜5000
 # 本に含めるチャプターを順番に並べましょう
 chapters:
   - chapter01
   - chapter02
+  - appendix
