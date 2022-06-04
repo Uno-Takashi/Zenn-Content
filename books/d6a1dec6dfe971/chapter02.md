@@ -1,5 +1,5 @@
 ---
-title: "2. モダンなChannels環境を構築しよう"
+title: "モダンなChannels環境を構築しよう"
 ---
 
 # Django Channels環境構築 with Docker
@@ -9,18 +9,6 @@ title: "2. モダンなChannels環境を構築しよう"
 [Uno-Takashi/Django Channels-Book: 『django-channelsで作る非同期通信アプリケーション入門』のサンプルコード置き場](https://github.com/Uno-Takashi/Django-Channels-Book)
 
 2章では、**Dockerで構築したDjango環境に対して、Django Channelsを追加し、asgiアプリケーションとして動作させる**設定をします。
-
-## 必須ソフトインストール
-
-本書では以下のアプリケーションがローカル環境にインストールされている必要があります。
-**各アプリケーションのインストール方法については解説しません**が、公式のインストール手順と共に記載します。
-
-- [Docker](https://www.docker.com/)
-  - [Get Docker | Docker Documentation](https://docs.docker.com/get-docker/)
-- [Docker Compose](https://docs.docker.com/compose/)
-  - [Install Docker Compose | Docker Documentation](https://docs.docker.com/compose/install/)
-- [Git](https://git-scm.com/)
-  - [Git - Downloads](https://git-scm.com/downloads)
 
 ## 環境の概要
 
