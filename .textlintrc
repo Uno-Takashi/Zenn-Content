@@ -10,7 +10,8 @@
       "max-ten": {
         "max": 5
       },
-      "max": 150
+      "max": 150,
+      "no-exclamation-question-mark": false
     }
   }
 }
