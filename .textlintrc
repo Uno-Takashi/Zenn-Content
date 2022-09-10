@@ -5,7 +5,7 @@
     "spellcheck-tech-word": true,
     "preset-ja-technical-writing": {
       "max-kanji-continuous-len": {
-        "max": 8
+        "max": 12
       },
       "max-ten": {
         "max": 5
