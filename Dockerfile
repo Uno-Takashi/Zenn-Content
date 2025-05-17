@@ -1,4 +1,4 @@
-FROM node:17.0 
+FROM node:23.0 
 
 WORKDIR /zenn-workspace/
 
